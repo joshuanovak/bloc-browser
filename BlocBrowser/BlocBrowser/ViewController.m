@@ -32,11 +32,11 @@
     self.webView.navigationDelegate = self;
     
     self.textField = [[UITextField alloc] init];
-    self.textField.keyboardType = UIKeyboardTypeURL;
+    self.textField.keyboardType = UIKeyboardTypeWebSearch;
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.textField.placeholder = NSLocalizedString(@"Website URL", @"Placeholder text for web brower URL field");
+    self.textField.placeholder = NSLocalizedString(@"Website URL or Google Search", @"Placeholder text for web brower URL field");
     self.textField.backgroundColor = [UIColor colorWithWhite:220/255.0f alpha:1];
     self.textField.delegate = self;
     
@@ -118,6 +118,12 @@
     NSString *URLString = textField.text;
     
     NSURL *URL = [NSURL URLWithString:URLString];
+    
+    if (!([URLString rangeOfString:@" "].location == NSNotFound)) {
+        NSString *stringForGoogle = [URLString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com/search?q=%@", stringForGoogle]];
+    }
+    
     
     if (!URL.scheme) {
         //user doesn't use http: or https:
