@@ -74,6 +74,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Welcome to Bloc Browser!", @"Welcome message")
+                                                                   message:NSLocalizedString(@"This is a secure browser. Any time you leave the application all history will be erased", @"Welcome message text")
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+    
+    [alert addAction:defaultAction];
+    dispatch_after(0.01, dispatch_get_main_queue(), ^{
+        [self presentViewController:alert animated:YES completion:nil];
+    });
+    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
