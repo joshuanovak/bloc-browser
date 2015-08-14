@@ -108,13 +108,14 @@
     static const CGFloat itemHeight = 50;
     CGFloat width = CGRectGetWidth(self.view.bounds);
     CGFloat browserHeight = CGRectGetHeight(self.view.bounds) - itemHeight;
-    CGFloat customLabelHeight = 80;
+    CGFloat customLabelHeight = 60;
     
     //assign the frames
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
     
-    self.awesomeToolbar.frame = CGRectMake(0, CGRectGetHeight(self.view.bounds)- customLabelHeight, width, customLabelHeight);
+    self.awesomeToolbar.frame = CGRectMake(0, CGRectGetHeight(self.view.bounds)- customLabelHeight, width
+                                           , customLabelHeight);
 }
 
 #pragma mark - AwesomeFloatingToolbarDelegate
@@ -128,6 +129,17 @@
         [self.webView stopLoading];
     }else if ([title isEqual:kWebBrowserRefreshString]){
         [self.webView reload];
+    }
+}
+
+-(void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset{
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
+    
+    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        toolbar.frame = potentialNewFrame;
     }
 }
 
