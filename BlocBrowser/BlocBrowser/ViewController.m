@@ -108,14 +108,14 @@
     static const CGFloat itemHeight = 50;
     CGFloat width = CGRectGetWidth(self.view.bounds);
     CGFloat browserHeight = CGRectGetHeight(self.view.bounds) - itemHeight;
-    CGFloat customLabelHeight = 60;
+    CGFloat customLabelHeight = 70;
     
     //assign the frames
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
     
-    self.awesomeToolbar.frame = CGRectMake(0, CGRectGetHeight(self.view.bounds)- customLabelHeight, width
-                                           , customLabelHeight);
+    self.awesomeToolbar.frame = CGRectMake(20, CGRectGetHeight(self.view.bounds)- customLabelHeight, 280, customLabelHeight);
+    //self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
 }
 
 #pragma mark - AwesomeFloatingToolbarDelegate
