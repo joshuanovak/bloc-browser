@@ -16,6 +16,8 @@
 @property (nonatomic, weak) UILabel *currentLabel;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
+@property (nonatomic, strong) UIPinchGestureRecognizer *pinchGesture;
+@property (nonatomic, strong) UILongPressGestureRecognizer *pressGesture;
 
 @end
 
@@ -67,6 +69,11 @@
         [self addGestureRecognizer:self.tapGesture];
         self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panFired:)];
         [self addGestureRecognizer:self.panGesture];
+        self.pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchFired:)];
+        [self addGestureRecognizer:self.pinchGesture];
+        self.pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressFired:)];
+        [self addGestureRecognizer:self.pressGesture];
+        
     }
     
     return self;
@@ -143,6 +150,27 @@
         
         [recognizer setTranslation:CGPointZero inView:self];
     }
+
+}
+
+//Assignment 26 code
+-(void) pinchFired:(UIPinchGestureRecognizer *)recognizer{
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        CGFloat scale = [recognizer scale];
+        
+        NSLog(@"New pinch: %f", scale);
+        
+        if ([self.delegate respondsToSelector:@selector(floatingToolbar:didPinchWithScale:)]) {
+            [self.delegate floatingToolbar:self didPinchWithScale:scale];
+        }
+        
+        recognizer.scale = 1;
+    }
+    //CGFloat scale = 1.0;
+}
+
+-(void)pressFired:(UILongPressGestureRecognizer *)recognizer{
+    
 }
 
 
