@@ -121,13 +121,11 @@
 }
 
 -(void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didPinchWithScale:(CGFloat)scale{
-//    CGAffineTransform currentTransform = CGAffineTransformIdentity;
-//    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-    toolbar.transform = CGAffineTransformMakeScale(scale, scale);
+    toolbar.transform = CGAffineTransformScale(toolbar.transform, scale, scale);
 }
 
--(void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPressWithOffset:(CGPoint)offset{
-    
+-(void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPressWithOffset:(CFTimeInterval)minimumPressDuration{
+    [self colorSelector];
 }
 
 #pragma mark - UITextFieldDelegate

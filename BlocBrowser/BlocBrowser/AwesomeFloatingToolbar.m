@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGesture;
 @property (nonatomic, strong) UILongPressGestureRecognizer *pressGesture;
+@property (nonatomic, assign) NSInteger offset;
 
 @end
 
@@ -33,10 +34,13 @@
         
         //save titles, set four colors
         self.currentTitles = titles;
+        
         self.colors = @[[UIColor colorWithRed:199/255.0 green:158/255.0 blue:203/255.0 alpha:1],
                         [UIColor colorWithRed:255/255.0 green:105/255.0 blue:97/255.0 alpha:1],
                         [UIColor colorWithRed:222/255.0 green:165/255.0 blue:164/255.0 alpha:1],
                         [UIColor colorWithRed:255/255.0 green:179/255.0 blue:71/255.0 alpha:1]];
+        
+        //[self colorSetter];
         
         NSMutableArray *labelsArray = [[NSMutableArray alloc] init];
         
@@ -48,7 +52,7 @@
             
             NSInteger currentTitleIndex = [self.currentTitles indexOfObject:currentTitle]; //0 through 3
             NSString *titleForThisLabel = [self.currentTitles objectAtIndex:currentTitleIndex];
-            UIColor *colorForThisLabel = [self.colors objectAtIndex:currentTitleIndex];
+            UIColor *colorForThisLabel = [self.colors objectAtIndex:(currentTitleIndex + self.offset) %4];
             
             label.textAlignment = NSTextAlignmentCenter;
             label.font = [UIFont systemFontOfSize:10];
@@ -111,6 +115,13 @@
     }
 }
 
+-(void) colorSetter{
+    NSInteger offSetNum = 2;
+    self.offset = offSetNum;
+    offSetNum++;
+}
+
+
 #pragma mark - Touch Handling
 
 - (UILabel *) labelFromTouches:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -153,7 +164,6 @@
 
 }
 
-//Assignment 26 code
 -(void) pinchFired:(UIPinchGestureRecognizer *)recognizer{
     if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGFloat scale = [recognizer scale];
@@ -165,15 +175,28 @@
         }
         
         recognizer.scale = 1;
+        [self layoutSubviews];
     }
     //CGFloat scale = 1.0;
 }
 
 -(void)pressFired:(UILongPressGestureRecognizer *)recognizer{
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        CFTimeInterval time = [recognizer minimumPressDuration];
+        [self colorSetter];
+        
+        NSLog(@"New Long Press");
+        
+        if ([self.delegate respondsToSelector:@selector(floatingToolbar:didRecieveLongPress:)]) {
+            [self.delegate floatingToolbar:self didRecieveLongPress:time];
+            [self colorSetter];
+        }
+        [self layoutSubviews];
+        
+    }
+    
     
 }
-
-
 
 #pragma mark - Button Enabling
 
