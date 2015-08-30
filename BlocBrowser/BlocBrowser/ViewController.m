@@ -125,7 +125,7 @@
 }
 
 -(void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPressWithOffset:(CFTimeInterval)minimumPressDuration{
-    [self colorSelector];
+    //[self colorSelector];
 }
 
 #pragma mark - UITextFieldDelegate
